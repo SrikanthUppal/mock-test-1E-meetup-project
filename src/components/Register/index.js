@@ -43,6 +43,7 @@ class Register extends Component {
     activeTopicId: topicsList[0].id,
     userInput: '',
     showSubmitError: false,
+    errorMsg: '',
   }
 
   onChangeInput = event => {
@@ -54,22 +55,27 @@ class Register extends Component {
   }
 
   render() {
+    const {activeTopicId, userInput, showSubmitError, errorMsg} = this.state
+    const findData = topicsList.find(each => each.id === activeTopicId)
     return (
       <MeetContext.Consumer>
         {value => {
           const {addData} = value
-          const {activeTopicId, userInput, showSubmitError} = this.state
-          const onClickRegister = () => {
+          const onClickRegister = event => {
+            event.preventDefault()
             const {history} = this.props
-            if (userInput === '') {
-              this.setState({showSubmitError: true})
-            } else {
-              const inputsDetails = {
-                Name: userInput,
-                topic: activeTopicId,
+            if (userInput !== '') {
+              const inputData = {
+                name: userInput,
+                topic: findData.displayText,
               }
-              addData(inputsDetails)
+              addData(inputData)
               history.replace('/')
+            } else {
+              this.setState({
+                errorMsg: 'Please enter your name',
+                showSubmitError: true,
+              })
             }
           }
           return (
@@ -103,9 +109,7 @@ class Register extends Component {
                     ))}
                   </SelectBar>
                   <Button type="submit">Register Now</Button>
-                  {showSubmitError && (
-                    <ErrorMsg>Please enter your name</ErrorMsg>
-                  )}
+                  {showSubmitError && <ErrorMsg>{errorMsg}</ErrorMsg>}
                 </RightSideForm>
               </RegisterContainer>
             </>

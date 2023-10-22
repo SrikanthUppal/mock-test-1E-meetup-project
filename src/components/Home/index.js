@@ -16,7 +16,7 @@ const Home = () => (
   <MeetContext.Consumer>
     {value => {
       const {data, buttonState, changeButtonState} = value
-      const {topic, Name} = data
+      const {name, topic} = data
       const onClickRegister = () => {
         changeButtonState()
       }
@@ -27,7 +27,7 @@ const Home = () => (
           <HomeContainer>
             {buttonState ? (
               <>
-                <TrueHeading>Hello {Name}</TrueHeading>
+                <TrueHeading>Hello {name}</TrueHeading>
                 <TrueDescription>Welcome to {topic}</TrueDescription>
                 <RegisterImage
                   src="https://assets.ccbp.in/frontend/react-js/meetup/meetup-img.png"
@@ -56,3 +56,4 @@ const Home = () => (
   </MeetContext.Consumer>
 )
 export default Home
+
